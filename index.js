@@ -150,11 +150,10 @@ app.put('/reset', async (req, res) => {
     }
 });
 
-app.post('/newpost', [authenticate], async (req, res) => {
+app.post('/newpost',[authenticate],async (req, res) => {
     try {
-        let newtime = new Date().toLocaleString().split(",");
-        let split = newtime[1].splice(0,5);
-        console.log(split);
+        let newtime = new Date().toLocaleString();
+        let split = newtime.split(",");
         const client = await mongoClient.connect(dbUrl);
         const opendb = client.db(database);
         const newpost = await opendb.collection(userCollection).insertOne({
@@ -165,7 +164,7 @@ app.post('/newpost', [authenticate], async (req, res) => {
             mail: req.body.auth.email,
             name: req.body.auth.username,
             date: new Date().getDate() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getFullYear(),
-            time: split
+            time: split[1]
         });
         res.status(200).json({ message: 'your blog has been posted', newpost });
         client.close();
@@ -226,8 +225,10 @@ app.delete('/onedelete/:id', [authenticate], async (req, res) => {
     }
 });
 
-app.put('/onemodify/:id', async (req, res) => {
+app.put('/onemodify/:id',[authenticate], async (req, res) => {
     try {
+        let newtime = new Date().toLocaleString();
+        let split = newtime.split(",");
         const client = await mongoClient.connect(dbUrl);
         const opendb = client.db(database);
         const id = mongodb.ObjectID(req.params.id);
@@ -241,7 +242,7 @@ app.put('/onemodify/:id', async (req, res) => {
                         body: req.body.body,
                         readme: req.body.readme,
                         date: new Date().getDate() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getFullYear(),
-                        time: new Date().getHours() + ":" + new Date().getMinutes()
+                        time: split[1]
                     },
                 });
             res.status(200).json({ message: 'blog has been update successfully', update });
