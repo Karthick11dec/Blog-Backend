@@ -152,6 +152,8 @@ app.put('/reset', async (req, res) => {
 
 app.post('/newpost', [authenticate], async (req, res) => {
     try {
+        let newtime = new Date().toLocaleString().split(",");
+        let split = newtime[1].splice(0,5);
         const client = await mongoClient.connect(dbUrl);
         const opendb = client.db(database);
         const newpost = await opendb.collection(userCollection).insertOne({
@@ -162,7 +164,7 @@ app.post('/newpost', [authenticate], async (req, res) => {
             mail: req.body.auth.email,
             name: req.body.auth.username,
             date: new Date().getDate() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getFullYear(),
-            time: new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds()
+            time: split
         });
         res.status(200).json({ message: 'your blog has been posted', newpost });
         client.close();
