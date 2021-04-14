@@ -28,7 +28,7 @@ app.get('/allusers', [authenticate], async (req, res) => {
     try {
         let client = await mongoClient.connect(dbUrl);
         let opendb = client.db(database);
-        let collection = await opendb.collection(userCollection).find({email:req.body.auth.email}).toArray();
+        let collection = await opendb.collection(userCollection).find({ email: req.body.auth.email }).toArray();
         client.close();
         res.json({
             message: "all users datas are showed here",
@@ -150,11 +150,8 @@ app.put('/reset', async (req, res) => {
     }
 });
 
-app.post('/newpost',[authenticate],async (req, res) => {
+app.post('/newpost', [authenticate], async (req, res) => {
     try {
-        let newtime = new Date().toLocaleString();
-        let split = newtime.split(",");
-        let timing = split[1];
         const client = await mongoClient.connect(dbUrl);
         const opendb = client.db(database);
         const newpost = await opendb.collection(userCollection).insertOne({
@@ -164,8 +161,8 @@ app.post('/newpost',[authenticate],async (req, res) => {
             readme: req.body.readme,
             mail: req.body.auth.email,
             name: req.body.auth.username,
-            date: new Date().getDate() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getFullYear(),
-            time: timing
+            date: new Date().toLocaleDateString(),
+            time: new Date().toLocaleTimeString()
         });
         res.status(200).json({ message: 'your blog has been posted', newpost });
         client.close();
@@ -226,11 +223,8 @@ app.delete('/onedelete/:id', [authenticate], async (req, res) => {
     }
 });
 
-app.put('/onemodify/:id',[authenticate], async (req, res) => {
+app.put('/onemodify/:id', [authenticate], async (req, res) => {
     try {
-        let newtime = new Date().toLocaleString();
-        let split = newtime.split(",");
-        let timing = split[1];
         const client = await mongoClient.connect(dbUrl);
         const opendb = client.db(database);
         const id = mongodb.ObjectID(req.params.id);
@@ -243,8 +237,8 @@ app.put('/onemodify/:id',[authenticate], async (req, res) => {
                         url: req.body.url,
                         body: req.body.body,
                         readme: req.body.readme,
-                        date: new Date().getDate() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getFullYear(),
-                        time: timing
+                        date: new Date().toLocaleDateString(),
+                        time: new Date().toLocaleTimeString()
                     },
                 });
             res.status(200).json({ message: 'blog has been update successfully', update });
@@ -259,4 +253,4 @@ app.put('/onemodify/:id',[authenticate], async (req, res) => {
 });
 
 
-app.listen( PORT , () => console.log(`your awesome blogger script were running:${PORT}`))
+app.listen(PORT, () => console.log(`your awesome blogger script were running:${PORT}`))
