@@ -105,7 +105,7 @@ app.post('/link', async (req, res) => {
                 subject: 'Reset Password',
                 text: 'click here to reset password',
                 html:
-                    '<h3>Reset your password Here</h3><a href="http://localhost:3001/reset">Click Here</a>',
+                    '<h3>Reset your password Here</h3><a href="https://blog-frontend-fs.netlify.app/reset">Click Here</a>',
             };
             transporter.sendMail(mailOptions, (err, data) => {
                 if (err) {
