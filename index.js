@@ -154,6 +154,7 @@ app.post('/newpost',[authenticate],async (req, res) => {
     try {
         let newtime = new Date().toLocaleString();
         let split = newtime.split(",");
+        let timing = split[1];
         const client = await mongoClient.connect(dbUrl);
         const opendb = client.db(database);
         const newpost = await opendb.collection(userCollection).insertOne({
@@ -164,7 +165,7 @@ app.post('/newpost',[authenticate],async (req, res) => {
             mail: req.body.auth.email,
             name: req.body.auth.username,
             date: new Date().getDate() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getFullYear(),
-            time: split[1]
+            time: timing
         });
         res.status(200).json({ message: 'your blog has been posted', newpost });
         client.close();
@@ -229,6 +230,7 @@ app.put('/onemodify/:id',[authenticate], async (req, res) => {
     try {
         let newtime = new Date().toLocaleString();
         let split = newtime.split(",");
+        let timing = split[1];
         const client = await mongoClient.connect(dbUrl);
         const opendb = client.db(database);
         const id = mongodb.ObjectID(req.params.id);
@@ -242,7 +244,7 @@ app.put('/onemodify/:id',[authenticate], async (req, res) => {
                         body: req.body.body,
                         readme: req.body.readme,
                         date: new Date().getDate() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getFullYear(),
-                        time: split[1]
+                        time: timing
                     },
                 });
             res.status(200).json({ message: 'blog has been update successfully', update });
