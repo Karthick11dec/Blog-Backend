@@ -9,7 +9,7 @@ dotenv.config();
 const mongoClient = mongodb.MongoClient;
 const dbUrl = process.env.DBURL || 'mongodb://127.0.0.1:27017';
 // const dbUrl = 'mongodb://127.0.0.1:27017';
-const port = 3000;
+const PORT = process.env.PORT || 3000;
 const database = 'Blogger';
 const userCollection = 'Blogdata';
 
@@ -257,4 +257,4 @@ app.put('/onemodify/:id',[authenticate], async (req, res) => {
 });
 
 
-app.listen(process.env.PORT || port, () => console.log(`your awesome blogger script were running:${port}`))
+app.listen( PORT , () => console.log(`your awesome blogger script were running:${PORT}`))
