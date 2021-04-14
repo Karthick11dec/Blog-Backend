@@ -154,6 +154,7 @@ app.post('/newpost', [authenticate], async (req, res) => {
     try {
         let newtime = new Date().toLocaleString().split(",");
         let split = newtime[1].splice(0,5);
+        console.log(split);
         const client = await mongoClient.connect(dbUrl);
         const opendb = client.db(database);
         const newpost = await opendb.collection(userCollection).insertOne({
