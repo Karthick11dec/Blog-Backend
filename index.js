@@ -165,6 +165,7 @@ app.post('/newpost', [authenticate], async (req, res) => {
             time: new Date().toLocaleTimeString()
         });
         res.status(200).json({ message: 'your blog has been posted', newpost });
+        // console.log(newpost)
         client.close();
     } catch (error) {
         console.log(error);
