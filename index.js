@@ -176,7 +176,7 @@ app.get('/myblogs', [authenticate], async (req, res) => {
     try {
         const client = await mongoClient.connect(dbUrl);
         const opendb = client.db(database);
-        let myblogs = await opendb.collection(userCollection).find({ mail: req.body.auth.email }).sort({ time: -1 }).toArray();
+        let myblogs = await opendb.collection(userCollection).find({ mail: req.body.auth.email }).sort({ date: -1 }).toArray();
         client.close();
         res.status(200).json({ message: "your all blogs were showned below", myblogs });
     } catch (error) {
