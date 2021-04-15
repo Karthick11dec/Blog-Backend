@@ -265,11 +265,11 @@ app.post('/contact', async (req, res) => {
             to: process.env.EMAIL,
             subject: 'User Need Help',
             html: `
-               <p>Hi Sir,</p>
-               <p>My name is ${req.body.name}</p>
-					<p><strong>Here is the message!!</strong></p>
-               <p>${req.body.message}</p>
-               `,
+               <div>Hi Sir,</div>
+               <div>My name is ${req.body.name}</div>
+               <p>Here the Message,<div>${req.body.message}</div></p>
+               <p>please respond to  the below mail</p>
+               <a href="mailto:${req.body.email}"><div>${req.body.email}</div></a>`
         };
         transporter.sendMail(mailOptions, (err, data) => {
             if (err) {
