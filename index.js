@@ -251,5 +251,37 @@ app.put('/onemodify/:id', [authenticate], async (req, res) => {
     }
 });
 
+app.post('/contact', async (req, res) => {
+    try {
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: process.env.EMAIL,
+                pass: process.env.PASSWORD,
+            },
+        });
+        const mailOptions = {
+            from: req.body.email,
+            to: process.env.EMAIL,
+            subject: 'User Need Help',
+            html: `
+               <p>Hi Sir,</p>
+               <p>My name is ${req.body.name}</p>
+					<p><strong>Here is the message!!</strong></p>
+               <p>${req.body.message}</p>
+               `,
+        };
+        transporter.sendMail(mailOptions, (err, data) => {
+            if (err) {
+                res.json({ message: "error with server mail transporter", err })
+            } else {
+                res.json({ message: "mail sent", data })
+            }
+        });
+    } catch (error) {
+        res.status(400).json({ message: 'something went wrong' });
+    }
+});
+
 
 app.listen(PORT, () => console.log(`your awesome blogger script were running:${PORT}`))
